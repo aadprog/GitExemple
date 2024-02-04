@@ -1,0 +1,15 @@
+# Demander le nom de l'utilisateur
+nom_utilisateur = input("Entrez votre nom : ")
+
+# Demander l'âge de l'utilisateur
+age_utilisateur = input("Entrez votre âge : ")
+
+# Convertir l'âge en entier (si possible)
+try:
+    age_utilisateur = int(age_utilisateur)
+except ValueError:
+    print("L'âge doit être un nombre entier.")
+    exit()
+
+# Afficher un message de salutation avec l'âge
+print(f"Bonjour {nom_utilisateur} ! Vous avez {age_utilisateur} ans.")
