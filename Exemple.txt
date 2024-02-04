@@ -1,15 +1,30 @@
-# Demander le nom de l'utilisateur
-nom_utilisateur = input("Entrez votre nom : ")
+class GestionnairePersonnes:
+    def __init__(self):
+        self.personnes = []
 
-# Demander l'âge de l'utilisateur
-age_utilisateur = input("Entrez votre âge : ")
+    def ajouter_personne(self, nom, age):
+        personne = {"nom": nom, "age": age}
+        self.personnes.append(personne)
 
-# Convertir l'âge en entier (si possible)
-try:
-    age_utilisateur = int(age_utilisateur)
-except ValueError:
-    print("L'âge doit être un nombre entier.")
-    exit()
+    def afficher_details(self):
+        for personne in self.personnes:
+            print(f"Nom: {personne['nom']}, Age: {personne['age']} ans")
 
-# Afficher un message de salutation avec l'âge
-print(f"Bonjour {nom_utilisateur} ! Vous avez {age_utilisateur} ans.")
+    def calculer_moyenne_age(self):
+        if not self.personnes:
+            return 0
+        total_age = sum(personne['age'] for personne in self.personnes)
+        moyenne_age = total_age / len(self.personnes)
+        return moyenne_age
+
+# Exemple d'utilisation
+gestionnaire = GestionnairePersonnes()
+
+gestionnaire.ajouter_personne("Alice", 25)
+gestionnaire.ajouter_personne("Bob", 30)
+gestionnaire.ajouter_personne("Charlie", 22)
+
+gestionnaire.afficher_details()
+
+moyenne_age = gestionnaire.calculer_moyenne_age()
+print(f"Moyenne d'âge: {moyenne_age:.2f} ans")
