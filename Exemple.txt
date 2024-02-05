@@ -1,24 +1,25 @@
 import requests
+from bs4 import BeautifulSoup
 
-# Fonction pour récupérer les données d'une API
-def obtenir_donnees_api(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Lève une exception en cas d'erreur HTTP
+# URL de la page à analyser
+url = 'https://www.example.com'
 
-        # Affiche les données de la réponse
-        print("Données de l'API:")
-        print(response.json())
+# Effectuer une requête HTTP pour obtenir le contenu de la page
+response = requests.get(url)
 
-    except requests.exceptions.HTTPError as errh:
-        print(f"Erreur HTTP: {errh}")
-    except requests.exceptions.ConnectionError as errc:
-        print(f"Erreur de connexion: {errc}")
-    except requests.exceptions.Timeout as errt:
-        print(f"Timeout: {errt}")
-    except requests.exceptions.RequestException as err:
-        print(f"Erreur lors de la requête: {err}")
+# Vérifier si la requête a réussi (statut 200)
+if response.status_code == 200:
+    # Utiliser BeautifulSoup pour analyser le contenu HTML de la page
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-# Exemple d'utilisation avec une API factice
-api_url = "https://jsonplaceholder.typicode.com/todos/1"
-obtenir_donnees_api(api_url)
+    # Exemple : extraire le titre de la page
+    titre_page = soup.title.text
+    print(f"Titre de la page : {titre_page}")
+
+    # Exemple : extraire tous les liens de la page
+    liens = soup.find_all('a')
+    print("\nLiens sur la page :")
+    for lien in liens:
+        print(lien.get('href'))
+else:
+    print(f"La requête a échoué avec le code d'état {response.status_code}")
