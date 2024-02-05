@@ -1,30 +1,24 @@
-class GestionnairePersonnes:
-    def __init__(self):
-        self.personnes = []
+import requests
 
-    def ajouter_personne(self, nom, age):
-        personne = {"nom": nom, "age": age}
-        self.personnes.append(personne)
+# Fonction pour récupérer les données d'une API
+def obtenir_donnees_api(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Lève une exception en cas d'erreur HTTP
 
-    def afficher_details(self):
-        for personne in self.personnes:
-            print(f"Nom: {personne['nom']}, Age: {personne['age']} ans")
+        # Affiche les données de la réponse
+        print("Données de l'API:")
+        print(response.json())
 
-    def calculer_moyenne_age(self):
-        if not self.personnes:
-            return 0
-        total_age = sum(personne['age'] for personne in self.personnes)
-        moyenne_age = total_age / len(self.personnes)
-        return moyenne_age
+    except requests.exceptions.HTTPError as errh:
+        print(f"Erreur HTTP: {errh}")
+    except requests.exceptions.ConnectionError as errc:
+        print(f"Erreur de connexion: {errc}")
+    except requests.exceptions.Timeout as errt:
+        print(f"Timeout: {errt}")
+    except requests.exceptions.RequestException as err:
+        print(f"Erreur lors de la requête: {err}")
 
-# Exemple d'utilisation
-gestionnaire = GestionnairePersonnes()
-
-gestionnaire.ajouter_personne("Alice", 25)
-gestionnaire.ajouter_personne("Bob", 30)
-gestionnaire.ajouter_personne("Charlie", 22)
-
-gestionnaire.afficher_details()
-
-moyenne_age = gestionnaire.calculer_moyenne_age()
-print(f"Moyenne d'âge: {moyenne_age:.2f} ans")
+# Exemple d'utilisation avec une API factice
+api_url = "https://jsonplaceholder.typicode.com/todos/1"
+obtenir_donnees_api(api_url)
